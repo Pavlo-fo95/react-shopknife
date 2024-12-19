@@ -1,0 +1,9 @@
+.home-page h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.2s;
+  }
