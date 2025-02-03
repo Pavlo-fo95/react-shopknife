@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import ProductCard from './ProductCard';
 import axios from 'axios';
+import ProductCard from './ProductCard';
 
 interface Product {
   id: number;
   name: string;
   description: string;
   price: number;
-  image_url: string; 
+  image_url: string;
 }
 
 const ProductList: React.FC = () => {
@@ -15,30 +15,27 @@ const ProductList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 3; // Совпадает с параметром page_size в backend
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
+
       try {
-        // Запрос к API
-        const response = await axios.get<Product[]>('http://127.0.0.1:8000/products/');
-        setProducts(response.data); // Сохраняем массив продуктов
-      } catch (error) {
-        setError("Ошибка при загрузке продуктов");
+        const response = await axios.get(
+          `http://127.0.0.1:8000/products?page=${currentPage}`
+        );
+        setProducts(response.data); // Используем данные с бэкенда
+      } catch (err) {
+        setError('Ошибка при загрузке продуктов');
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
-
-  // Получение продуктов для текущей страницы
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
+  }, [currentPage]); // Перезагружаем данные при изменении текущей страницы
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -54,9 +51,9 @@ const ProductList: React.FC = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {currentProducts.length > 0 ? (
-          currentProducts.map((product) => (
+      <div className="product-list">
+        {products.length > 0 ? (
+          products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))
         ) : (
@@ -64,36 +61,17 @@ const ProductList: React.FC = () => {
         )}
       </div>
 
-      {/* Пагинация */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+      <div className="pagination">
         <button
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
-          style={{ margin: '0 5px', padding: '5px 10px' }}
         >
           Назад
         </button>
-        {Array.from({ length: Math.ceil(products.length / itemsPerPage) }, (_, i) => i + 1).map((page) => (
-          <button
-            key={page}
-            onClick={() => handlePageChange(page)}
-            disabled={page === currentPage}
-            style={{
-              margin: '0 5px',
-              padding: '5px 10px',
-              backgroundColor: page === currentPage ? '#007bff' : '#fff',
-              color: page === currentPage ? '#fff' : '#000',
-              border: '1px solid #ccc',
-              cursor: 'pointer',
-            }}
-          >
-            {page}
-          </button>
-        ))}
+        <span>Страница: {currentPage}</span>
         <button
-          disabled={currentPage === Math.ceil(products.length / itemsPerPage)}
           onClick={() => handlePageChange(currentPage + 1)}
-          style={{ margin: '0 5px', padding: '5px 10px' }}
+          disabled={products.length < itemsPerPage}
         >
           Вперед
         </button>

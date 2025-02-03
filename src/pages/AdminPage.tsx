@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './AdminPage.css';
 
 interface Product {
   id: number;
@@ -28,16 +29,16 @@ const AdminPage: React.FC = () => {
   const handleDelete = async (id: number) => {
     try {
       await axios.delete(`http://localhost:8000/products/${id}`);
-      setProducts(products.filter(product => product.id !== id));
+      setProducts(products.filter((product) => product.id !== id));
     } catch (error) {
       console.error('Ошибка при удалении продукта:', error);
     }
   };
 
   return (
-    <div>
-      <h1>Панель администратора</h1>
-      <table>
+    <div className="admin-page">
+      <h1 className="admin-page__title">Панель администратора</h1>
+      <table className="admin-page__table">
         <thead>
           <tr>
             <th>ID</th>
@@ -47,13 +48,18 @@ const AdminPage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map(product => (
+          {products.map((product) => (
             <tr key={product.id}>
               <td>{product.id}</td>
               <td>{product.name}</td>
               <td>{product.price} грн</td>
               <td>
-                <button onClick={() => handleDelete(product.id)}>Удалить</button>
+                <button
+                  className="admin-page__delete-button"
+                  onClick={() => handleDelete(product.id)}
+                >
+                  Удалить
+                </button>
               </td>
             </tr>
           ))}

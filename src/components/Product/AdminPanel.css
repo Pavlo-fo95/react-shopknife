@@ -1,0 +1,15 @@
+.admin-panel {
+    text-align: center;
+    padding: 50px 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .admin-panel__title {
+    font-size: 28px;
+    color: #333;
+  }
+  
+  .admin-panel__description {
+    font-size: 18px;
+    color: #555;
+  }

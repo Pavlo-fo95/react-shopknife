@@ -1,0 +1,43 @@
+.admin-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .admin-page__title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .admin-page__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .admin-page__table th,
+  .admin-page__table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .admin-page__table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .admin-page__delete-button {
+    background-color: #ff4d4f;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .admin-page__delete-button:hover {
+    background-color: #ff1a1d;
+  }
